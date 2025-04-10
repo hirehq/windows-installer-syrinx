@@ -11,7 +11,7 @@ OutputBaseFilename=HireHQConnectorForSyrinxSetup
 Compression=lzma
 SolidCompression=yes
 SetupIconFile=hirehq-tray-icon-updated.ico
-PrivilegesRequired=none
+PrivilegesRequired=admin
 
 [Registry]
 Root: HKLM; Subkey: "Software\HireHQ\Connector"; ValueType: string; ValueName: "Version"; ValueData: "1.0"; Flags: uninsdeletekey
@@ -19,7 +19,7 @@ Root: HKLM; Subkey: "Software\HireHQ\Connector"; ValueType: string; ValueName: "
 [Files]
 Source: "GoogleCloudSDKInstaller.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "tailscale-setup-latest.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "HireHQTrayApp.exe"; DestDir: "{app}"; Flags: ignoreversion dontcompress
+Source: "HireHQTrayApp.exe"; DestDir: "{app}"; Flags: ignoreversion
 
 [Dirs]
 Name: "{commonappdata}\HireHQConnector"; Permissions: users-modify admins-full
@@ -95,11 +95,12 @@ begin
       'gcloud auth activate-service-account --key-file="{commonappdata}\HireHQConnector\service-account.json"' + #13#10 +
       'gcloud storage rsync --recursive "' + SyrinxDirPage.Values[0] + '\Docs\Driver Photos\" "gs://hirehq-app-production-photos/' + TenantId + '" --delete-unmatched-destination-objects --gzip-in-flight-all --exclude=".*\.db$"', False);
 
-    SaveStringToFile(ExpandConstant('{app}\sync-fleet-documents.bat'),
+    SaveStringToFile(ExpandConstant('{app}\sync-documents.bat'),
       '@echo off' + #13#10 +
-      'REM Sync Fleet Documents' + #13#10 +
+      'REM Sync Documents' + #13#10 +
       'gcloud auth activate-service-account --key-file="{commonappdata}\HireHQConnector\service-account.json"' + #13#10 +
-      'gcloud storage rsync --recursive "' + SyrinxDirPage.Values[0] + '\Docs\Fleet\" "gs://hirehq-app-production-documents/' + TenantId + '" --delete-unmatched-destination-objects --gzip-in-flight=jpeg,jpg,gif,png --exclude=".*\.db$"', False);
+      'gcloud storage rsync --recursive "' + SyrinxDirPage.Values[0] + '\Docs\Category\" "gs://hirehq-app-production-documents/' + TenantId + '/category" --delete-unmatched-destination-objects --gzip-in-flight=jpeg,jpg,gif,png --exclude=".*\.db$"' + #13#10 +
+      'gcloud storage rsync --recursive "' + SyrinxDirPage.Values[0] + '\Docs\Fleet\" "gs://hirehq-app-production-documents/' + TenantId + '/fleet" --delete-unmatched-destination-objects --gzip-in-flight=jpeg,jpg,gif,png --exclude=".*\.db$"', False);
 
     SaveStringToFile(ExpandConstant('{app}\download-hire-contract-files.bat'),
       '@echo off' + #13#10 +
@@ -114,7 +115,7 @@ Filename: "{app}\GoogleCloudSDKInstaller.exe"; Description: "Install Google Clou
 Filename: "{app}\tailscale-setup-latest.exe"; Description: "Install Tailscale?"; Flags: postinstall skipifsilent
 Filename: "{app}\HireHQTrayApp.exe"; Description: "Run Hire HQ Monitor App?"; Flags: postinstall skipifsilent
 Filename: "schtasks"; Parameters: "/Create /TN ""Hire HQ Sync Driver Photos"" /TR ""{app}\sync-driver-photos.bat"" /SC MINUTE /MO 10 /F /RL HIGHEST /DU 12:00"; Flags: runhidden
-Filename: "schtasks"; Parameters: "/Create /TN ""Hire HQ Sync Fleet Documents"" /TR ""{app}\sync-fleet-documents.bat"" /SC HOURLY /MO 6 /F /RL HIGHEST /DU 12:00"; Flags: runhidden
+Filename: "schtasks"; Parameters: "/Create /TN ""Hire HQ Sync Documents"" /TR ""{app}\sync--documents.bat"" /SC HOURLY /MO 6 /F /RL HIGHEST /DU 12:00"; Flags: runhidden
 Filename: "schtasks"; Parameters: "/Create /TN ""Hire HQ Download Hire Contract Files"" /TR ""{app}\download-hire-contract-files.bat"" /SC MINUTE /MO 10 /F /RL HIGHEST /DU 01:00"; Flags: runhidden
 Filename: "schtasks"; Parameters: "/Create /TN ""Hire HQ Connector Tray"" /TR ""{app}\HireHQTrayApp.exe"" /SC ONLOGON /RL HIGHEST /F"; Flags: runhidden
 
