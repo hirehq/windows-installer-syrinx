@@ -119,9 +119,9 @@ end;
 Filename: "{app}\GoogleCloudSDKInstaller.exe"; Description: "Install Google Cloud SDK?"; Flags: postinstall skipifsilent
 Filename: "{app}\tailscale-setup-latest.exe"; Description: "Install Tailscale?"; Flags: postinstall skipifsilent
 Filename: "{app}\HireHQTrayApp.exe"; Description: "Run Hire HQ Monitor App?"; Flags: postinstall skipifsilent
-Filename: "schtasks"; Parameters: "/Create /TN ""\Hire HQ\Hire HQ Sync Driver Photos"" /TR ""\""{app}\sync-driver-photos.bat\"""" /SC MINUTE /MO 10 /F /RL HIGHEST /DU 12:00"; Flags: runhidden
-Filename: "schtasks"; Parameters: "/Create /TN ""\Hire HQ\Hire HQ Sync Documents"" /TR ""\""{app}\sync-documents.bat\"""" /SC HOURLY /MO 6 /F /RL HIGHEST /DU 12:00"; Flags: runhidden
-Filename: "schtasks"; Parameters: "/Create /TN ""\Hire HQ\Hire HQ Download Hire Contract Files"" /TR ""\""{app}\download-hire-contract-files.bat\"""" /SC MINUTE /MO 10 /F /RL HIGHEST /DU 01:00"; Flags: runhidden
+Filename: "schtasks"; Parameters: "/Create /TN ""\Hire HQ\Hire HQ Sync Driver Photos"" /TR ""\""{app}\sync-driver-photos.bat\"""" /SC MINUTE /MO 10 /ST 00:00 /F /RL HIGHEST"; Flags: runhidden
+Filename: "schtasks"; Parameters: "/Create /TN ""\Hire HQ\Hire HQ Sync Documents"" /TR ""\""{app}\sync-documents.bat\"""" /SC HOURLY /MO 6 /ST 00:00 /F /RL HIGHEST"; Flags: runhidden
+Filename: "schtasks"; Parameters: "/Create /TN ""\Hire HQ\Hire HQ Download Hire Contract Files"" /TR ""\""{app}\download-hire-contract-files.bat\"""" /SC MINUTE /MO 10 /ST 00:00 /F /RL HIGHEST"; Flags: runhidden
 Filename: "schtasks"; Parameters: "/Create /TN ""\Hire HQ\Hire HQ Connector Tray"" /TR ""\""{app}\HireHQTrayApp.exe\"""" /SC ONLOGON /RL HIGHEST /F"; Flags: runhidden
 
 [Icons]
