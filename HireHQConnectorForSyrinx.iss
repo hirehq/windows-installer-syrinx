@@ -95,7 +95,7 @@ begin
       '@echo off' + #13#10 +
       'REM Sync Photos' + #13#10 +
       ExpandConstant('CALL gcloud auth activate-service-account --key-file="{commonappdata}\HireHQConnector\service-account.json"') + #13#10 +
-      ExpandConstant('CALL gcloud storage rsync --recursive "' + SyrinxDirPage.Values[0] + '\Docs\Driver Photos" "gs://hirehq-app-production-photos/' + TenantId + '" --delete-unmatched-destination-objects --gzip-in-flight-all --exclude=".*\.db$"'), False);
+      ExpandConstant('CALL gcloud storage rsync --recursive "' + SyrinxDirPage.Values[0] + '\Docs\Mobile Images" "gs://hirehq-app-production-photos/' + TenantId + '" --delete-unmatched-destination-objects --gzip-in-flight-all --exclude=".*\.db$"'), False);
 
     SaveStringToFile(ExpandConstant('{app}\sync-documents.bat'),
       '@echo off' + #13#10 +
