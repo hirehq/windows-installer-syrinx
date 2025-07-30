@@ -21,7 +21,6 @@ $requiredFiles = @(
     "GoogleCloudSDKInstaller.exe",
     "tailscale-setup-latest.exe",
     "HireHQTrayApp.exe",
-    "hirehq-tray-icon-updated.ico",
     $installerScript
 )
 
